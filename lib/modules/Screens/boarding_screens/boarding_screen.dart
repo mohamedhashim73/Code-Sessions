@@ -1,7 +1,8 @@
 import 'package:code_app/models/boarding_model.dart';
-import 'package:code_app/modules/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+
+import '../home_screen/home_screen.dart';
 
 class BoardingScreen extends StatefulWidget {
   const BoardingScreen({Key? key}) : super(key: key);
@@ -20,7 +21,7 @@ class _BoardingScreenState extends State<BoardingScreen> {
       body: Container(
         height: double.infinity,
         width: double.infinity,
-        padding: EdgeInsets.all(15),
+        padding: const EdgeInsets.all(15),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children:
@@ -32,7 +33,7 @@ class _BoardingScreenState extends State<BoardingScreen> {
                 {
                   Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>HomeScreen()));
                 },
-                child: Text("Skip",style: TextStyle(color: Colors.green,fontWeight: FontWeight.bold,fontSize: 20),),
+                child: const Text("Skip",style: TextStyle(color: Colors.green,fontWeight: FontWeight.bold,fontSize: 20),),
               ),
             ),
             Expanded(

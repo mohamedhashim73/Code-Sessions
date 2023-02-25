@@ -1,10 +1,12 @@
-
-import 'package:code_app/modules/sign_up_screen.dart';
+import 'package:code_app/modules/Screens/auth_screens/auth_cubit/auth_cubit.dart';
+import 'package:code_app/modules/Screens/auth_screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:bloc/bloc.dart';
-import 'layout/bloc_observer.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'shared/bloc_observer/bloc_observer.dart';
 
-void main(){
+void main()
+{
   Bloc.observer = MyBlocObserver();
   runApp(const MyApp());
 }
@@ -14,9 +16,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: RegisterScreen()
+    return MultiBlocProvider(
+        providers:
+        [
+          BlocProvider(create: (context) => AuthCubit()),
+        ],
+        child: MaterialApp(
+            debugShowCheckedModeBanner: false,
+            home: LoginScreen()
+        ),
     );
   }
 }
