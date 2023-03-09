@@ -4,6 +4,7 @@ import 'package:code_app/shared/network/local_network.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'auth_states.dart';
 
 class AuthCubit extends Cubit<AuthStates>{

@@ -14,6 +14,7 @@ import 'package:code_app/layout/layout_cubit/layout_states.dart';
 import 'package:http/http.dart';
 
 import '../../models/banner_model.dart';
+import '../../models/product_model.dart';
 
 class LayoutCubit extends Cubit<LayoutStates>{
   LayoutCubit() : super(LayoutInitialState());
@@ -62,7 +63,7 @@ class LayoutCubit extends Cubit<LayoutStates>{
           {
             bannersData.add(BannerModel.fromJson(data: item));
           }
-        print("First Url on Banners Data is : ${bannersData.first.image}");
+        // print("First Url on Banners Data is : ${bannersData.first.image}");
         emit(GetBannersSuccessState());
       }
     else
@@ -91,7 +92,7 @@ class LayoutCubit extends Cubit<LayoutStates>{
       {
         categoriesData.add(CategoryModel.fromJson(data: item));
       }
-      print("First Url on Categories Data is : ${categoriesData.first.image}");
+      // print("First Url on Categories Data is : ${categoriesData.first.image}");
       emit(GetCategoriesSuccessState());
     }
     else
@@ -101,4 +102,94 @@ class LayoutCubit extends Cubit<LayoutStates>{
       emit(FailedToGetCategoriesState());
     }
   }
+
+  List<ProductModel> productsData = [];
+  // Get Banners Data
+  Set<String> favoritesStatus = {};
+  void getProducts() async {
+    emit(GetProductsLoadingState());
+    Response response = await http.get(
+        Uri.parse("https://student.valuxapps.com/api/home"),
+      headers:
+      {
+        'lang' : "en"
+      }
+    );
+    var responseBody = jsonDecode(response.body);
+    if( responseBody['status'] == true )
+    {
+      for( var item in responseBody['data']['products'] )
+      {
+        productsData.add(ProductModel.fromJson(json: item));
+      }
+      emit(GetProductsSuccessState());
+    }
+    else
+    {
+      productsData = [];
+      // print("Products Data is : $responseBody");
+      emit(FailedToGetProductsState());
+    }
+  }
+
+  List<ProductModel> favoritesData = [];
+  Future<void> getFavorites() async {
+    favoritesData.clear();
+    emit(GetFavoritesLoadingState());
+    Response response = await http.get(
+        Uri.parse("https://student.valuxapps.com/api/favorites"),
+        headers:
+        {
+          'lang' : 'en',
+          'Authorization' : token!
+        }
+    );
+    var responseBody = jsonDecode(response.body);
+    if( responseBody['status'] == true )
+    {
+      for( var item in responseBody['data']['data'] )
+      {
+        favoritesStatus.add(item['product']['id'].toString());
+        favoritesData.add(ProductModel.fromJson(json: item['product']));
+      }
+      debugPrint("Favorites number is : ${responseBody['data']['total']}");
+      debugPrint("Favorites Status Number is : ${favoritesStatus.length}");
+      emit(GetFavoritesSuccessState());
+    }
+    else
+    {
+      favoritesData = [];
+      debugPrint("Favorites Data is : $responseBody");
+      emit(FailedToGetFavoritesState());
+    }
+  }
+
+  void addOrRemoveToOrFromFavorites({required String productID}) async {
+    // عشان يحصل ريفرش في صفحه HomeScreen
+    favoritesStatus.contains(productID) == true ? favoritesStatus.remove(productID) : favoritesStatus.add(productID);
+    emit(GetFavoritesLoadingState());
+    Response response = await http.post(
+        Uri.parse("https://student.valuxapps.com/api/favorites"),
+        headers:
+        {
+          'lang' : 'en',
+          'Authorization' : token!
+        },
+      body:
+      {
+        "product_id": productID
+      }
+    );
+    var responseBody = jsonDecode(response.body);
+    if( responseBody['status'] == true )
+    {
+      await getFavorites();
+      emit(AddOrRemoveFromFavoritesSuccessState());
+    }
+    else
+    {
+      emit(FailedToAddOrRemoveFromFavoritesState());
+    }
+  }
+
 }

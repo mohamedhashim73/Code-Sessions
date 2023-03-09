@@ -15,6 +15,17 @@ class GetBannersSuccessState extends LayoutStates{}
 class GetBannersLoadingState extends LayoutStates{}
 class FailedToGetBannersState extends LayoutStates{}
 
+class GetFavoritesSuccessState extends LayoutStates{}
+class GetFavoritesLoadingState extends LayoutStates{}
+class FailedToGetFavoritesState extends LayoutStates{}
+
+class AddOrRemoveFromFavoritesSuccessState extends LayoutStates{}
+class FailedToAddOrRemoveFromFavoritesState extends LayoutStates{}
+
 class GetCategoriesSuccessState extends LayoutStates{}
 class GetCategoriesLoadingState extends LayoutStates{}
 class FailedToGetCategoriesState extends LayoutStates{}
+
+class GetProductsSuccessState extends LayoutStates{}
+class GetProductsLoadingState extends LayoutStates{}
+class FailedToGetProductsState extends LayoutStates{}

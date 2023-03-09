@@ -9,6 +9,7 @@ import 'package:code_app/shared/network/local_network.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'shared/bloc_observer/bloc_observer.dart';
 
 Future<void> main() async {
@@ -34,12 +35,11 @@ class MyApp extends StatelessWidget {
           providers:
           [
             BlocProvider(create: (context) => AuthCubit()),
-            BlocProvider(create: (context) => LayoutCubit()..getBanners()..getCategories()),
+            BlocProvider(create: (context) => LayoutCubit()..getFavorites()..getBanners()..getCategories()..getProducts()),
           ],
           child: MaterialApp(
               debugShowCheckedModeBanner: false,
-              home: RegisterScreen()
-              // token != null && token != "" ? const LayoutScreen() : LoginScreen()
+              home: token != null && token != "" ? const LayoutScreen() : LoginScreen()
           ),
         );
       },
