@@ -4,6 +4,14 @@ class LayoutInitialState extends LayoutStates{}
 
 class ChangeBottomNavigationIndexState extends LayoutStates{}
 
+class ChangePasswordSuccessState extends LayoutStates{}
+class ChangePasswordLoadingState extends LayoutStates{}
+class FailedToChangePasswordState extends LayoutStates{}
+
+class UpdateUserDataSuccessState extends LayoutStates{}
+class UpdateUserDataLoadingState extends LayoutStates{}
+class FailedToUpdateUserDataState extends LayoutStates{}
+
 class GetUserDataSuccessState extends LayoutStates{}
 class GetUserDataLoadingState extends LayoutStates{}
 class FailedToGetUserDataState extends LayoutStates{

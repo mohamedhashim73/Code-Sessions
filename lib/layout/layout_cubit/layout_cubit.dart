@@ -15,6 +15,7 @@ import 'package:http/http.dart';
 
 import '../../models/banner_model.dart';
 import '../../models/product_model.dart';
+import '../../shared/network/local_network.dart';
 
 class LayoutCubit extends Cubit<LayoutStates>{
   LayoutCubit() : super(LayoutInitialState());
@@ -190,6 +191,62 @@ class LayoutCubit extends Cubit<LayoutStates>{
     {
       emit(FailedToAddOrRemoveFromFavoritesState());
     }
+  }
+
+  void changePassword({required String newPassword}) async {
+    emit(ChangePasswordLoadingState());
+    String? currentPassword = await CacheNetwork.getCacheData(key: 'password');
+    Response response = await http.post(
+        Uri.parse("https://student.valuxapps.com/api/change-password"),
+      body: {
+          'current_password' : currentPassword,
+          'new_password' : newPassword
+      },
+      headers: {
+          'Authorization' : token!
+      }
+    );
+    var responseBody = jsonDecode(response.body);
+    if( responseBody['status'] )
+      {
+        CacheNetwork.insertToCache(key: "password", value: newPassword);
+        password = newPassword;
+        emit(ChangePasswordSuccessState());
+      }
+    else
+      {
+        emit(FailedToChangePasswordState());
+      }
+  }
+
+  void updateUserData({required String phone,required String name}) async {
+    emit(UpdateUserDataLoadingState());
+    String? currentPassword = await CacheNetwork.getCacheData(key: 'password');
+    Response response = await http.put(
+        Uri.parse("https://student.valuxapps.com/api/update-profile"),
+      body:
+      {
+          'name' : name,
+          'email' : userModel!.email,
+          'password' : currentPassword,
+          'phone' : phone,
+          'image' : userModel!.image,
+      },
+      headers:
+      {
+          'Authorization' : token!
+      }
+    );
+    var responseBody = jsonDecode(response.body);
+    if( responseBody['status'] )
+      {
+        userModel = UserModel.fromJson(responseBody['data']);
+        emit(UpdateUserDataSuccessState());
+      }
+    else
+      {
+        emit(FailedToUpdateUserDataState());
+      }
   }
 
 }

@@ -1,3 +1,4 @@
+import 'package:code_app/layout/layout_screen.dart';
 import 'package:code_app/modules/Screens/auth_screens/auth_cubit/auth_cubit.dart';
 import 'package:code_app/modules/Screens/auth_screens/register_screen.dart';
 import 'package:code_app/modules/Screens/home_screen/home_screen.dart';
@@ -58,7 +59,7 @@ class LoginScreen extends StatelessWidget {
             else if ( state is LoginSuccessState )
             {
               Navigator.pop(context);   // عشان يخرج من alertDialog
-              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LayoutScreen()));
             }
           },
           builder: (context,state){

@@ -16,8 +16,9 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = MyBlocObserver();
   await CacheNetwork.cacheInitialization();
-  token = CacheNetwork.getCacheData(key: 'token');
-  print("token is : $token");
+  token = await CacheNetwork.getCacheData(key: 'token');
+  password = await CacheNetwork.getCacheData(key: 'password');
+  debugPrint("token is : $token");
   runApp(const MyApp());
 }
 
@@ -39,7 +40,7 @@ class MyApp extends StatelessWidget {
           ],
           child: MaterialApp(
               debugShowCheckedModeBanner: false,
-              home: token != null && token != "" ? const LayoutScreen() : LoginScreen()
+              home: token != null ? const LayoutScreen() : LoginScreen()
           ),
         );
       },

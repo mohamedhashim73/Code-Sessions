@@ -32,6 +32,7 @@ class AuthCubit extends Cubit<AuthStates>{
           var data = jsonDecode(response.body);
           if( data['status'] == true )
             {
+              await CacheNetwork.insertToCache(key: "password", value: password);
               debugPrint("Response is : $data");
               emit(RegisterSuccessState());
             }
@@ -67,6 +68,7 @@ class AuthCubit extends Cubit<AuthStates>{
             {
               // debugPrint("User login success and his Data is : ${responseData['data']['token']}");
               await CacheNetwork.insertToCache(key: "token", value: responseData['data']['token']);
+              await CacheNetwork.insertToCache(key: "password", value: password);
               emit(LoginSuccessState());
             }
           else

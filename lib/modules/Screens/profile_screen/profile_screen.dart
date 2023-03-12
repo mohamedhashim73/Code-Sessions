@@ -1,9 +1,11 @@
 import 'package:code_app/layout/layout_cubit/layout_states.dart';
+import 'package:code_app/modules/Screens/change_password.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../layout/layout_cubit/layout_cubit.dart';
 import '../../../shared/style/colors.dart';
+import '../update_data.dart';
 
 class ProfileScreen extends StatelessWidget{
   ProfileScreen({super.key});
@@ -49,7 +51,13 @@ class ProfileScreen extends StatelessWidget{
                             child: Column(
                               children:
                               [
-                                _buttonItem(iconData: Icons.person,title: "Update Data",onTap: (){}),
+                                _buttonItem(iconData: Icons.person,title: "Change Password",onTap: (){
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => ChangePasswordScreen()));
+                                }),
+                                const SizedBox(height: 15,),
+                                _buttonItem(iconData: Icons.person,title: "Update Data",onTap: (){
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => UpdateUserDataScreen()));
+                                }),
                                 const SizedBox(height: 15,),
                                 _buttonItem(iconData: Icons.shopping_cart,title: "Orders",onTap: (){}),
                                 const SizedBox(height: 15,),
